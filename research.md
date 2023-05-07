@@ -28,3 +28,11 @@ Article: Python Website Full Tutorial - Flask, Authentication, Databases & More
 Source: https://www.youtube.com/watch?v=dam0GPOAvVI&t=1764s
 
 Reason: Needed to know how to setup a base website so I can implement my own code, needed to learn some stuff about jinga, bootstrap and HTML etc.
+
+## 5 
+
+Article: python hash method
+
+source: https://www.geeksforgeeks.org/python-hash-method/
+
+Reason: Wanted to learn about hashing algorithims in python
