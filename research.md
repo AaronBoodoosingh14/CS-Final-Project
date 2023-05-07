@@ -21,4 +21,10 @@ Source: https://stackoverflow.com/questions/31252791/flask-importerror-no-module
 
 Reason: Needed help installing flask because I was running into more issues
 
-4# 
+## 4
+
+Article: Python Website Full Tutorial - Flask, Authentication, Databases & More
+
+Source: https://www.youtube.com/watch?v=dam0GPOAvVI&t=1764s
+
+Reason: Needed to know how to setup a base website so I can implement my own code, needed to learn some stuff about jinga, bootstrap and HTML etc.
