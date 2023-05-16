@@ -4,7 +4,6 @@ from . import db   ##means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import create_app
-from . import UploadForm
 
 
 auth = Blueprint('auth', __name__)
@@ -52,8 +51,3 @@ def sign_up():
 
     return render_template("signup.html", user=current_user)
 
-'''@auth.route('/upload image', methods=['GET','POST'])
-def upload_image():
-    form = UploadForm 
-    if form.validate_on_submit():
-    return render_template('index.html')'''
