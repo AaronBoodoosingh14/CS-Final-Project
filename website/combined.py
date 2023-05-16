@@ -4,6 +4,12 @@ from . import db   ##means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import create_app
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from os import path
+from flask_login import LoginManager
+'''from flask_wtf.file import FileField, FileRequired, FileAllowed
+from wtforms import SubmitField'''
 
 
 auth = Blueprint('auth', __name__)
@@ -51,3 +57,41 @@ def sign_up():
 
     return render_template("signup.html", user=current_user)
 
+
+
+
+
+db = SQLAlchemy()
+DB_NAME = "database.db"
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = '123 abc '
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    db.init_app(app)
+    from .views import views
+    from .auth import auth
+
+    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')
+
+    '''photos = UploadSet('photos', IMAGES)
+    configure_uploads(app, photos)
+
+    class UploadForm(FlaskForm):
+        photo = FileField(validators=[
+            FileAllowed(photos, 'Only images are allowed'), 
+            FileRequired('Field should not be empty')
+        ])
+
+        submit = SubmitField('Upload')'''
+
+    from .models import User, Note
+    
+    def create_database(app):
+        if not path.exists('website/' + DB_NAME):
+            db.create_all(app=app)
+            print('Created Database!')
+
+    return app

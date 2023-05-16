@@ -1,40 +1,59 @@
-from flask import Flask
+from flask import Flask, render_template, send_from_directory, url_for
+from flask import Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
-from flask_uploads import UploadSet, IMAGES, configure_uploads
-from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
+from flask_wtf import FlaskForm
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import  FileStorage
+from flask_uploads import UploadSet, IMAGES, configure_uploads
+
+auth = Blueprint('auth', __name__)
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
-
+app = Flask(__name__)
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
+    app.config['SECRET_KEY'] = '123 abc '
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
     db.init_app(app)
-    app.config['UPLOAD_PHOTOS_DEST'] = 'uploads'
     from .views import views
     from .auth import auth
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    photos = UploadSet('photos', IMAGES)
-    configure_uploads(app, photos)
+photos = UploadSet('photos', IMAGES)
+configure_uploads(app, photos)
 
-    class UploadForm(FlaskForm):
-        photo = FileField(validators=[
-            FileAllowed(photos, 'Only images are allowed'), 
-            FileRequired('Field should not be empty')
+class UploadForm(FlaskForm):
+    photo = FileField(validators=[
+        FileAllowed(photos, 'Only images are allowed'), 
+        FileRequired('Field should not be empty')
         ])
 
-        submit = SubmitField('Upload')
+    submit = SubmitField('Upload')
 
-    from .models import User, Note
+
+@app.route('/uploads/<filename>')
+def get_file(filename):
+    return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
+    
+@auth.route('/upload image', methods=['GET','POST'])
+def upload_image():
+    form = UploadForm()
+    if form.validate_on_submit():
+        filename = photos.save(form.photo.data)
+        file_url = url_for('get_file', filename=filename)
+    else:
+        file_url = None
+    return render_template('index.html', form = form, file_url = file_url)
+from .models import User, Note
     
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
