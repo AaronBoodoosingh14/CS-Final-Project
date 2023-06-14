@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        .header {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header a {
+            color: #000;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        .header a:hover {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <h1>Flask File Uploads Tutorial</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.file.label }} {{ form.file() }}
+        {{ form.submit() }}
+    </form>
+
+    <h2>Uploaded Images:</h2>
+    {% for image in uploaded_images %}
+        <img src="{{ image }}" alt="Uploaded Image"><br>
+    {% endfor %}
+</body>
+</html>
