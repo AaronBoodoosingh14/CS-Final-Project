@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Collection</title>
+    <style>
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid black;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Collection</h1>
+
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='images/capy.jpg') }}" alt="Image 1">
+        <img src="{{ url_for('static', filename='images/example.jpg') }}" alt="Image 2">
+        <img src="{{ url_for('static', filename='images/image.jpg') }}" alt="Image 3">
+    </div>
+</body>
+</html>
